@@ -1,0 +1,10 @@
+google-genai
+langchain
+langchain-google-vertexai
+langchain-community
+playwright
+google-cloud-aiplatform
+langchain-google-vertexai
+nest_asyncio
+unstructured
+langchain_chroma

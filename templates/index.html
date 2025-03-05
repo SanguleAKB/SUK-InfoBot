@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUK InfoBot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white text-black flex flex-col items-center justify-center min-h-screen p-4">
+
+    <h1 class="text-3xl font-bold mb-4">Shivaji University Chatbot</h1>
+
+    <!-- Wider Chat Box with Black Messages -->
+    <div id="chat-box" class="w-full max-w-4xl bg-gray-100 p-6 rounded-lg shadow-lg h-[600px] overflow-y-auto space-y-4 border border-gray-300">
+        <div class="bot bg-black text-white p-4 rounded-lg w-fit max-w-[80%]">Hello! How can I assist you?</div>
+    </div>
+
+    <!-- Input & Send Button -->
+    <div class="flex mt-4 w-full max-w-4xl">
+        <input type="text" id="user-input" class="flex-grow p-4 rounded-lg border border-gray-300" placeholder="Type your question...">
+        <button onclick="sendMessage()" class="ml-3 bg-black text-white px-6 py-3 rounded-lg transition hover:bg-gray-800">Send</button>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const userInput = document.getElementById('user-input').value.trim();
+            if (!userInput) return;
+
+            const chatBox = document.getElementById('chat-box');
+            chatBox.innerHTML += `<div class="user bg-black text-white p-4 rounded-lg self-end text-right w-fit max-w-[80%] ml-auto">${userInput}</div>`;
+
+            fetch('/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_input: userInput })
+            })
+            .then(response => response.json())
+            .then(data => {
+                chatBox.innerHTML += `<div class="bot bg-black text-white p-4 rounded-lg w-fit max-w-[80%]">${data.bot_response}</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to latest message
+            })
+            .catch(() => {
+                chatBox.innerHTML += `<div class="bot bg-red-500 text-white p-4 rounded-lg w-fit max-w-[80%]">An error occurred. Please try again.</div>`;
+            });
+
+            document.getElementById('user-input').value = '';
+        }
+    </script>
+
+</body>
+</html>
