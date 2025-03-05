@@ -1,0 +1,15 @@
+{
+	"version":1,
+	"builds":[
+	{
+		"src":"new-rag.py",
+		"use":"@vercel/python"
+	}
+	],
+	"routes":[
+		{
+			"src":"/(.*)",
+			"dest":"/new-rag.py"
+		}
+	]
+}
